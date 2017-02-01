@@ -17,10 +17,8 @@ PAL=pal/$(UNAME)
 SRCDIR=src
 OBJDIR=obj
 BINDIR=bin
-#PREFIX=/opt/tikitank
 
 LIBS_Linux=-lrt -lprussdrv
-#-l:libusb-0.1.so.4.4.4
 
 LIBS=-lpthread -lm
 
@@ -32,7 +30,6 @@ PAL_SRC := $(wildcard $(SRCDIR)/$(PAL)/*.c)
 PAL_INC := $(wildcard $(SRCDIR)/$(PAL)/*.h)
 PAL_OBJ := $(PAL_SRC:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 
-# TODO: Add CFLAGS=-mtune=cortex-a8 -march=armv7-a -O3
 
 .PHONY: all clean
 
@@ -75,10 +72,3 @@ $(PAL_OBJ): $(OBJDIR)/%.o : $(SRCDIR)/%.c $(COMMON_INC)
 
 clean:
 	rm -rf $(OBJDIR) $(BINDIR)
-
-#install: all
-#	mkdir -p $(PREFIX)
-#	cp $(BINDIR)/$(TARGET) $(BINDIR)/firmware.bin $(PREFIX)
-#	cp -a static $(PREFIX)
-#	cp init /etc/init.d/tikitank
-#	update-rc.d tikitank defaults 99
