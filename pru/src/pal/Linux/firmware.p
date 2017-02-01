@@ -1,17 +1,5 @@
-// The idea is to have a program that does something you can see from user
-// space, without doing anything complicated like playing with IO pins,
-// DDR or shared memory.
-//
-// Try adjusting the DELAYCOUNT value and re-running the test; you should
-// be able to convince yourself that the program is actually doing something.
-
-// To signal the host that were done, we set bit 5 in our R31
-// simultaneously with putting the number of the signal we want
-// into R31 bits 0-3. See 5.2.2.2 in AM335x PRU-ICSS Reference Guide.
-
 .origin 0 // offset of the start of the code in PRU memory
 .entrypoint START // program entry point, used by debugger only
-
 
 #define PRU0_R31_VEC_VALID (1<<5)
 #define SIGNUM 3 // corresponds to PRU_EVTOUT_0
@@ -69,7 +57,6 @@ LOOP:
 
     SUB TXCTR, TXCTR, 1
     QBEQ BAIL, TXCTR, 0
-//    BOARDRESET
 .endm
 
 .macro READNEXTDWORD
@@ -110,7 +97,6 @@ ITER_TIME:
 
 BAIL:
     DOLOW
- //   BOARDOFF
-        // tell host were done, then halt
+    // tell host were done, then halt
     MOV R31.b0, PRU0_R31_VEC_VALID | SIGNUM
     HALT
